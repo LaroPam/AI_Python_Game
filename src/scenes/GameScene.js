@@ -17,6 +17,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.worldSize = this.registry.get('worldSize');
     this.add.tileSprite(0, 0, this.worldSize, this.worldSize, 'tile').setOrigin(0);
+    this.physics.world.setBounds(0, 0, this.worldSize, this.worldSize);
     this.factory = new EntityFactory(this);
     const balance = this.cache.json.get('balanceData');
     this.player = this.factory.createPlayer(this.worldSize / 2, this.worldSize / 2, balance.player);

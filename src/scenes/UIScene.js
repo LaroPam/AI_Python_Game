@@ -30,7 +30,11 @@ export default class UIScene extends Phaser.Scene {
   update() {
     const player = this.gameScene.player;
     this.healthBar.updateValue(player.stats.health, player.stats.maxHealth);
-    this.xpBar.updateValue(this.gameScene.xpSystem.currentXp, this.gameScene.xpSystem.nextLevelXp, this.gameScene.xpSystem.level);
+    this.xpBar.updateValue(
+      this.gameScene.xpSystem.currentXp,
+      this.gameScene.xpSystem.nextLevelXp,
+      this.gameScene.xpSystem.level
+    );
     const t = Math.floor(this.gameScene.elapsed);
     this.timerText.setText(`${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`);
     this.miniMap.updatePosition(player, this.gameScene.worldSize);
