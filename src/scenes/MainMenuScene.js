@@ -1,16 +1,9 @@
-import AudioManager from '../core/AudioManager.js';
-import SaveSystem from '../core/SaveSystem.js';
-
 export default class MainMenuScene extends Phaser.Scene {
   constructor() {
     super('MainMenuScene');
   }
 
   create() {
-    this.audio = new AudioManager(this);
-    this.audio.applySettings(this.registry.get('settings'));
-    this.audio.playMusic('music_menu');
-
     this.add.text(100, 80, 'Phaser Survivors', { fontSize: '48px', color: '#fff' });
     this.add.text(100, 140, 'Вдохновлено Vampire Survivors', { fontSize: '18px', color: '#ccc' });
 
