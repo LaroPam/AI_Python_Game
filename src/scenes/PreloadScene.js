@@ -8,12 +8,16 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.audio('music_menu', SILENCE);
-    this.load.audio('music_game', SILENCE);
-    this.load.audio('music_boss', SILENCE);
-    this.load.audio('sfx_hit', SILENCE);
-    this.load.audio('sfx_xp', SILENCE);
-    this.load.audio('sfx_chest', SILENCE);
+    // Use HTML5 Audio (asAudioBuffer: false) to avoid WebAudio decode errors when
+    // loading tiny data-URI placeholders. This prevents BaseAudioContext.decodeAudioData
+    // from receiving undefined buffers and stalling the loader.
+    const audioConfig = { asAudioBuffer: false };
+    this.load.audio('music_menu', SILENCE, audioConfig);
+    this.load.audio('music_game', SILENCE, audioConfig);
+    this.load.audio('music_boss', SILENCE, audioConfig);
+    this.load.audio('sfx_hit', SILENCE, audioConfig);
+    this.load.audio('sfx_xp', SILENCE, audioConfig);
+    this.load.audio('sfx_chest', SILENCE, audioConfig);
 
     this.add.text(20, 20, 'Загрузка...', { fontSize: '24px', color: '#fff' });
   }
