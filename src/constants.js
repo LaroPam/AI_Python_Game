@@ -2,6 +2,7 @@ export const GAME_WIDTH = 1920;
 export const GAME_HEIGHT = 1080;
 export const WORLD_SIZE = 6000;
 export const STARTING_WEAPON = 'magicMissile';
+export const FONT_FAMILY = '"Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif';
 export const RARITY_COLORS = {
   common: '#9ca3af', // gray
   uncommon: '#22c55e', // green

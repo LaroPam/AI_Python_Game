@@ -1,11 +1,13 @@
+import { FONT_FAMILY } from '../constants.js';
+
 export default class MainMenuScene extends Phaser.Scene {
   constructor() {
     super('MainMenuScene');
   }
 
   create() {
-    this.add.text(100, 80, 'Phaser Survivors', { fontSize: '48px', color: '#fff' });
-    this.add.text(100, 140, 'Вдохновлено Vampire Survivors', { fontSize: '18px', color: '#ccc' });
+    this.add.text(100, 80, 'Phaser Survivors', { fontSize: '48px', fontFamily: FONT_FAMILY, color: '#f8fafc' });
+    this.add.text(100, 140, 'Вдохновлено Vampire Survivors', { fontSize: '18px', fontFamily: FONT_FAMILY, color: '#cbd5e1' });
 
     this.selectedWeapon = this.registry.get('startWeapon') || 'magicMissile';
     this.createWeaponSelector(100, 180);
@@ -21,17 +23,22 @@ export default class MainMenuScene extends Phaser.Scene {
   createButton(x, y, label, cb) {
     const btn = this.add.rectangle(x, y, 220, 48, 0x1f2937).setOrigin(0, 0);
     btn.setInteractive({ useHandCursor: true }).on('pointerup', cb);
-    this.add.text(x + 12, y + 12, label, { fontSize: '20px', color: '#f8fafc' });
+    this.add.text(x + 12, y + 12, label, { fontSize: '20px', fontFamily: FONT_FAMILY, color: '#f8fafc' });
   }
 
   createWeaponSelector(x, y) {
     const weapons = this.cache.json.get('weaponsData') || {};
     const keys = Object.keys(weapons).slice(0, 4);
-    this.add.text(x, y - 18, 'Стартовое оружие', { fontSize: '18px', color: '#e5e7eb' });
+    this.add.text(x, y - 18, 'Стартовое оружие', { fontSize: '18px', fontFamily: FONT_FAMILY, color: '#e5e7eb' });
     keys.forEach((id, idx) => {
       const weapon = weapons[id];
       const rect = this.add.rectangle(x + idx * 140, y + 8, 130, 46, 0x111827, 0.7).setOrigin(0);
-      const label = this.add.text(rect.x + 8, rect.y + 12, weapon.name || id, { fontSize: '14px', color: '#f8fafc' });
+      const label = this.add.text(rect.x + 8, rect.y + 12, weapon.name || id, {
+        fontSize: '14px',
+        fontFamily: FONT_FAMILY,
+        color: '#f8fafc',
+        wordWrap: { width: rect.width - 16 }
+      });
       const select = () => {
         this.selectedWeapon = id;
         this.registry.set('startWeapon', id);

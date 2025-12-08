@@ -27,6 +27,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     this.setCollideWorldBounds(true);
     this.setCircle(12, 4, 4);
+    this.body.setImmovable(true);
+    this.body.pushable = false;
+    this.body.setDamping(false);
+    this.body.setDrag(0);
 
     this.stats = {
       maxHealth: config.hp,

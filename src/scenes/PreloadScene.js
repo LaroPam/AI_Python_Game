@@ -1,4 +1,5 @@
 import SaveSystem from '../core/SaveSystem.js';
+import { FONT_FAMILY } from '../constants.js';
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -6,7 +7,7 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    this.add.text(20, 20, 'Загрузка...', { fontSize: '24px', color: '#fff' });
+    this.add.text(20, 20, 'Загрузка...', { fontSize: '24px', fontFamily: FONT_FAMILY, color: '#f8fafc' });
   }
 
   create() {
