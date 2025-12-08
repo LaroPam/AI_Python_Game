@@ -6,6 +6,9 @@ export default class WeaponOrbitingBlades extends WeaponBase {
     this.blades = this.scene.add.group();
     this.buildBlades();
     this.angle = 0;
+    this.tickElapsed = 0;
+    this.rotationSpeed = 0.06;
+    this.tickRate = Math.max(200, this.config.tickRate || 280);
   }
 
   buildBlades() {
@@ -18,7 +21,7 @@ export default class WeaponOrbitingBlades extends WeaponBase {
 
   update(time, delta) {
     this.buildBlades();
-    this.angle += delta * 0.2;
+    this.angle += delta * this.rotationSpeed;
     const radius = this.config.radius;
     const blades = this.blades.getChildren();
     blades.forEach((blade, index) => {
@@ -26,7 +29,9 @@ export default class WeaponOrbitingBlades extends WeaponBase {
       blade.x = this.owner.x + Math.cos(a) * radius;
       blade.y = this.owner.y + Math.sin(a) * radius;
     });
-    if (this.scene && this.scene.enemies) {
+    this.tickElapsed += delta;
+    if (this.tickElapsed >= this.tickRate && this.scene && this.scene.enemies) {
+      this.tickElapsed = 0;
       this.scene.damageEnemiesInRadius(this.owner.x, this.owner.y, radius, this.config.damage, true);
     }
   }
