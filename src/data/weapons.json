@@ -1,0 +1,76 @@
+{
+  "magicMissile": {
+    "id": "magicMissile",
+    "name": "Magic Missile",
+    "cooldown": 800,
+    "damage": 10,
+    "speed": 450,
+    "projectileCount": 1,
+    "upgrades": [
+      { "name": "+Урон", "damage": 5 },
+      { "name": "Больше снарядов", "projectileCount": 1 },
+      { "name": "Скорострельность", "cooldown": -100 },
+      { "name": "Пробивание", "pierce": 1 },
+      { "name": "Супер залп", "projectileCount": 2, "cooldown": -150 }
+    ]
+  },
+  "fireAura": {
+    "id": "fireAura",
+    "name": "Fire Aura",
+    "cooldown": 0,
+    "damage": 5,
+    "radius": 120,
+    "tickRate": 600,
+    "upgrades": [
+      { "name": "+Радиус", "radius": 20 },
+      { "name": "+Урон", "damage": 3 },
+      { "name": "Быстрее тики", "tickRate": -100 },
+      { "name": "Двойной пояс", "radius": 40 },
+      { "name": "Огненная буря", "damage": 6 }
+    ]
+  },
+  "lightning": {
+    "id": "lightning",
+    "name": "Lightning Strike",
+    "cooldown": 1500,
+    "damage": 20,
+    "radius": 100,
+    "upgrades": [
+      { "name": "Широкая молния", "radius": 30 },
+      { "name": "Мощность", "damage": 10 },
+      { "name": "Быстрая гроза", "cooldown": -200 },
+      { "name": "Двойной удар", "projectileCount": 1 },
+      { "name": "Цепная", "projectileCount": 1 }
+    ]
+  },
+  "boomerang": {
+    "id": "boomerang",
+    "name": "Boomerang",
+    "cooldown": 1200,
+    "damage": 8,
+    "speed": 400,
+    "radius": 40,
+    "upgrades": [
+      { "name": "Возврат быстрее", "speed": 60 },
+      { "name": "+Урон", "damage": 4 },
+      { "name": "Двойной бумеранг", "projectileCount": 1 },
+      { "name": "Большой клинок", "radius": 10 },
+      { "name": "Бесконечный", "pierce": 3 }
+    ]
+  },
+  "orbit": {
+    "id": "orbit",
+    "name": "Orbiting Blades",
+    "cooldown": 0,
+    "damage": 6,
+    "radius": 140,
+    "projectileCount": 3,
+    "upgrades": [
+      { "name": "Больше лезвий", "projectileCount": 2 },
+      { "name": "+Радиус", "radius": 20 },
+      { "name": "+Урон", "damage": 4 },
+      { "name": "Гироскоп", "cooldown": -100 },
+      { "name": "Пила", "damage": 8 }
+    ]
+  }
+}
