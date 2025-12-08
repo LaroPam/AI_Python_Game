@@ -1,18 +1,20 @@
 import { WORLD_SIZE } from '../constants.js';
 
+const dataPath = (file) => new URL(`../data/${file}.json`, import.meta.url).href;
+
 export default class BootScene extends Phaser.Scene {
   constructor() {
     super('BootScene');
   }
 
   preload() {
-    // Load JSON with the Phaser loader instead of module import assertions to avoid
-    // browser/Node compatibility issues that can silently halt scene booting.
-    this.load.json('weaponsData', 'src/data/weapons.json');
-    this.load.json('enemiesData', 'src/data/enemies.json');
-    this.load.json('upgradesData', 'src/data/upgrades.json');
-    this.load.json('wavesData', 'src/data/waves.json');
-    this.load.json('balanceData', 'src/data/balance.json');
+    // Load JSON via module-relative URLs so hosting under any base path (root, subfolder, or
+    // previously used /game/) continues to work after the directory move.
+    this.load.json('weaponsData', dataPath('weapons'));
+    this.load.json('enemiesData', dataPath('enemies'));
+    this.load.json('upgradesData', dataPath('upgrades'));
+    this.load.json('wavesData', dataPath('waves'));
+    this.load.json('balanceData', dataPath('balance'));
   }
 
   create() {
