@@ -14,7 +14,8 @@ export default class WeaponFireAura extends WeaponBase {
     this.tickTimer += delta;
     if (this.tickTimer >= Math.max(200, this.config.tickRate)) {
       this.tickTimer = 0;
-      this.scene.damageEnemiesInRadius(this.owner.x, this.owner.y, this.config.radius, this.config.damage);
+      if (this.scene.fx) this.scene.fx.shockwave(this.owner.x, this.owner.y, 0xf97316, 16);
+      this.scene.damageEnemiesInRadius(this.owner.x, this.owner.y, this.config.radius, this.config.damage, true, 0xf97316);
     }
   }
 }

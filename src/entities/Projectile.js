@@ -9,6 +9,8 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.lifespan = 2500;
     this.spawnTime = scene.time.now;
     this.fireDir = new Phaser.Math.Vector2(1, 0);
+    this.fxTrail = null;
+    this.fxColor = 0xffffff;
     this.body.setAllowGravity(false);
     this.body.setImmovable(false);
     this.body.setDrag(0);
@@ -22,6 +24,10 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.setActive(true).setVisible(true);
     this.body.setVelocity(dir.x * this.speed, dir.y * this.speed);
     this.setRotation(dir.angle());
+    if (this.scene.fx) {
+      this.fxTrail = this.scene.fx.attachProjectileTrail(this, this.fxColor);
+      this.scene.fx.muzzleFlash(this.x, this.y, this.fxColor);
+    }
     this.scene.tweens.add({
       targets: this,
       scale: { from: 0.75, to: 1 },
@@ -44,5 +50,13 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     if (time - this.spawnTime > this.lifespan) {
       this.destroy();
     }
+  }
+
+  destroy(fromScene) {
+    if (this.fxTrail && this.scene?.fx) {
+      this.scene.fx.stopEmitter(this.fxTrail);
+      this.fxTrail = null;
+    }
+    super.destroy(fromScene);
   }
 }

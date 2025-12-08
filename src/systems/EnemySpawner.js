@@ -25,6 +25,7 @@ export default class EnemySpawner {
     };
     const enemy = this.factory.createEnemy({ x, y, typeData: scaledData });
     this.scene.enemies.add(enemy);
+    if (this.scene.fx) this.scene.fx.burst(x, y, scaledData.tint || 0xffffff, 8);
     return enemy;
   }
 }

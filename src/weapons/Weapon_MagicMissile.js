@@ -14,6 +14,7 @@ export default class WeaponMagicMissile extends WeaponBase {
       p.damage = this.config.damage;
       p.speed = this.config.speed;
       p.pierce = this.config.pierce || 0;
+      p.fxColor = 0x93c5fd;
       const angle = aimAngle + Phaser.Math.DegToRad((i - (count - 1) / 2) * 6);
       const dir = new Phaser.Math.Vector2(Math.cos(angle), Math.sin(angle));
       p.fire(dir);

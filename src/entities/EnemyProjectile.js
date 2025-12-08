@@ -8,6 +8,7 @@ export default class EnemyProjectile extends Phaser.Physics.Arcade.Sprite {
     this.lifespan = 3500;
     this.spawnTime = scene.time.now;
     this.fireDir = new Phaser.Math.Vector2(1, 0);
+    this.fxTrail = null;
     this.body.setAllowGravity(false);
     this.body.setImmovable(false);
     this.body.setDrag(0);
@@ -20,6 +21,10 @@ export default class EnemyProjectile extends Phaser.Physics.Arcade.Sprite {
     this.setActive(true).setVisible(true);
     this.body.setVelocity(dir.x * this.speed, dir.y * this.speed);
     this.setRotation(dir.angle());
+    if (this.scene.fx) {
+      this.fxTrail = this.scene.fx.attachProjectileTrail(this, 0xff3b30);
+      this.scene.fx.muzzleFlash(this.x, this.y, 0xff3b30);
+    }
     this.scene.tweens.add({ targets: this, scale: { from: 0.6, to: 1 }, duration: 120, ease: 'sine.out' });
   }
 
@@ -36,5 +41,13 @@ export default class EnemyProjectile extends Phaser.Physics.Arcade.Sprite {
     if (time - this.spawnTime > this.lifespan) {
       this.destroy();
     }
+  }
+
+  destroy(fromScene) {
+    if (this.fxTrail && this.scene?.fx) {
+      this.scene.fx.stopEmitter(this.fxTrail);
+      this.fxTrail = null;
+    }
+    super.destroy(fromScene);
   }
 }

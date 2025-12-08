@@ -23,9 +23,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
       const knockDir = new Phaser.Math.Vector2(this.x - source.x, this.y - source.y).normalize();
       this.body.setVelocity(knockDir.x * 160, knockDir.y * 160);
     }
+    if (this.scene.fx) this.scene.fx.impact(this.x, this.y, this.typeData.tint || 0xffffff, 10);
     this.scene.events.emit(UI_EVENTS.DAMAGE_NUMBER, { x: this.x, y: this.y, amount });
     if (this.hp <= 0) {
       this.emit('killed', this);
+      if (this.scene.fx) this.scene.fx.burst(this.x, this.y, this.typeData.tint || 0xfff3d7, 16);
       this.destroy();
     }
   }

@@ -32,7 +32,7 @@ export default class WeaponOrbitingBlades extends WeaponBase {
     this.tickElapsed += delta;
     if (this.tickElapsed >= this.tickRate && this.scene && this.scene.enemies) {
       this.tickElapsed = 0;
-      this.scene.damageEnemiesInRadius(this.owner.x, this.owner.y, radius, this.config.damage, true);
+      this.scene.damageEnemiesInRadius(this.owner.x, this.owner.y, radius, this.config.damage, true, 0x93c5fd);
     }
   }
 }

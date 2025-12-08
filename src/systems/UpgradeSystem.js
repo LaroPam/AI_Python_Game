@@ -74,7 +74,7 @@ export default class UpgradeSystem {
       });
     }
     if (upgrade.auraDamage) {
-      this.scene.damageEnemiesInRadius(this.scene.player.x, this.scene.player.y, 160, upgrade.auraDamage);
+      this.scene.damageEnemiesInRadius(this.scene.player.x, this.scene.player.y, 160, upgrade.auraDamage, true, 0xfde68a);
     }
     if (upgrade.autoMagnet) {
       this.scene.autoMagnet = true;

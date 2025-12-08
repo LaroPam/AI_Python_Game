@@ -10,6 +10,7 @@ export default class WeaponFireStaff extends WeaponBase {
       p.damage = this.config.damage;
       p.speed = this.config.speed || 360;
       p.pierce = this.config.pierce || 0;
+      p.fxColor = 0xffae3b;
       const angle = Phaser.Math.DegToRad(Phaser.Math.Between(0, 359));
       const dir = new Phaser.Math.Vector2(Math.cos(angle), Math.sin(angle));
       p.fire(dir);

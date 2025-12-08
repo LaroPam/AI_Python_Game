@@ -13,7 +13,8 @@ export default class WeaponSword extends WeaponBase {
       const hitY = this.owner.y + rotated.y * (this.config.radius + 20);
       const arc = this.scene.add.arc(hitX, hitY, this.config.radius, 200, 340, false, 0xfacc15, 0.25);
       this.scene.time.delayedCall(80, () => {
-        this.scene.damageEnemiesInRadius(hitX, hitY, this.config.radius, this.config.damage);
+        if (this.scene.fx) this.scene.fx.shockwave(hitX, hitY, 0xfacc15, 12);
+        this.scene.damageEnemiesInRadius(hitX, hitY, this.config.radius, this.config.damage, true, 0xfacc15);
         arc.destroy();
       });
     }

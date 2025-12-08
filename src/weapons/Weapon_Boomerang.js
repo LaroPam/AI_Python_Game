@@ -10,6 +10,7 @@ export default class WeaponBoomerang extends WeaponBase {
       p.damage = this.config.damage;
       p.speed = this.config.speed;
       p.pierce = this.config.pierce || 0;
+      p.fxColor = 0x22d3ee;
       const baseAngle = (this.owner.body.velocity.lengthSq() > 0
         ? this.owner.body.velocity.angle()
         : this.owner.lastAimDir.angle());

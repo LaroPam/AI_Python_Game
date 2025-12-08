@@ -1,5 +1,6 @@
 import CameraManager from '../core/CameraManager.js';
 import EntityFactory from '../core/EntityFactory.js';
+import FXManager from '../core/FXManager.js';
 import EnemySpawner from '../systems/EnemySpawner.js';
 import WaveManager from '../systems/WaveManager.js';
 import XPSystem from '../systems/XPSystem.js';
@@ -18,6 +19,7 @@ export default class GameScene extends Phaser.Scene {
     this.worldSize = this.registry.get('worldSize');
     this.add.tileSprite(0, 0, this.worldSize, this.worldSize, 'tile').setOrigin(0);
     this.physics.world.setBounds(0, 0, this.worldSize, this.worldSize);
+    this.fx = new FXManager(this);
     this.factory = new EntityFactory(this);
     // Guard against missing or failed JSON loads so the scene can continue with defaults rather than throwing
     const balance = this.cache.json.get('balanceData') || { player: { hp: 100, speed: 180, recovery: 0.5, magnet: 120 } };
@@ -53,6 +55,9 @@ export default class GameScene extends Phaser.Scene {
     this.autoMagnet = false;
 
     this.player.on('died', () => this.endRun());
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      if (this.fx) this.fx.destroy();
+    });
   }
 
   update(time, delta) {
@@ -100,7 +105,10 @@ export default class GameScene extends Phaser.Scene {
     return Phaser.Utils.Array.GetRandom(this.enemies.getChildren());
   }
 
-  damageEnemiesInRadius(x, y, radius, damage) {
+  damageEnemiesInRadius(x, y, radius, damage, spawnFX = false, color = 0xffffff) {
+    if (spawnFX && this.fx) {
+      this.fx.shockwave(x, y, color);
+    }
     this.enemies.children.iterate((enemy) => {
       if (!enemy) return;
       if (Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y) <= radius) {
@@ -130,6 +138,7 @@ export default class GameScene extends Phaser.Scene {
     const boss = this.factory.createBoss(this.player.x + 400, this.player.y, bossData);
     boss.on('killed', () => this.handleBossDefeated());
     this.bossGroup.add(boss);
+    if (this.fx) this.fx.shockwave(boss.x, boss.y, 0xf97316, 30);
     this.waveManager.markBossSpawned();
     this.events.emit(UI_EVENTS.BOSS_SPAWN, bossData);
   }
@@ -163,6 +172,7 @@ export default class GameScene extends Phaser.Scene {
 
   handleBossDefeated() {
     this.add.text(this.player.x, this.player.y - 50, 'Босс побежден!', { color: '#facc15' }).setScrollFactor(0);
+    if (this.fx) this.fx.burst(this.player.x, this.player.y, 0xfacc15, 32);
     this.openUpgradeMenu(3, null, false);
   }
 }

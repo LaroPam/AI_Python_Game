@@ -84,6 +84,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.lastHit = now;
     const dmg = Math.max(1, amount - this.stats.armor);
     this.stats.health -= dmg;
+    if (this.scene.fx) this.scene.fx.impact(this.x, this.y, 0xff8a8a, 14);
     if (this.stats.health <= 0) {
       this.emit('died');
     }

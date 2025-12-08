@@ -23,9 +23,11 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
       const knockDir = new Phaser.Math.Vector2(this.x - source.x, this.y - source.y).normalize();
       this.body.setVelocity(knockDir.x * 140, knockDir.y * 140);
     }
+    if (this.scene.fx) this.scene.fx.impact(this.x, this.y, 0xf87171, 14);
     this.scene.events.emit(UI_EVENTS.DAMAGE_NUMBER, { x: this.x, y: this.y, amount });
     if (this.hp <= 0) {
       this.emit('killed', this);
+      if (this.scene.fx) this.scene.fx.burst(this.x, this.y, 0xf97316, 24);
       this.destroy();
     }
   }

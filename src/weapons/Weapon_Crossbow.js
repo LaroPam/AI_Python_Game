@@ -14,6 +14,7 @@ export default class WeaponCrossbow extends WeaponBase {
       p.damage = this.config.damage;
       p.speed = this.config.speed || 520;
       p.pierce = this.config.pierce || 0;
+      p.fxColor = 0xf97316;
       const angle = aimAngle + Phaser.Math.DegToRad((i - (shots - 1) / 2) * 6);
       const dir = new Phaser.Math.Vector2(Math.cos(angle), Math.sin(angle));
       p.fire(dir);
