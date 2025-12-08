@@ -1,22 +1,29 @@
 import { WORLD_SIZE } from '../constants.js';
-import weaponsData from '../data/weapons.json' assert { type: 'json' };
-import enemiesData from '../data/enemies.json' assert { type: 'json' };
-import upgradesData from '../data/upgrades.json' assert { type: 'json' };
-import wavesData from '../data/waves.json' assert { type: 'json' };
-import balanceData from '../data/balance.json' assert { type: 'json' };
 
 export default class BootScene extends Phaser.Scene {
   constructor() {
     super('BootScene');
   }
 
+  preload() {
+    // Load JSON with the Phaser loader instead of module import assertions to avoid
+    // browser/Node compatibility issues that can silently halt scene booting.
+    this.load.json('weaponsData', 'src/data/weapons.json');
+    this.load.json('enemiesData', 'src/data/enemies.json');
+    this.load.json('upgradesData', 'src/data/upgrades.json');
+    this.load.json('wavesData', 'src/data/waves.json');
+    this.load.json('balanceData', 'src/data/balance.json');
+  }
+
   create() {
-    // Seed the cache synchronously to avoid loader stalls on JSON requests
-    this.cache.json.add('weaponsData', weaponsData);
-    this.cache.json.add('enemiesData', enemiesData);
-    this.cache.json.add('upgradesData', upgradesData);
-    this.cache.json.add('wavesData', wavesData);
-    this.cache.json.add('balanceData', balanceData);
+    // Ensure the data made it into cache; if any failed, log an error so the user
+    // knows why startup might not proceed.
+    const datasets = ['weaponsData', 'enemiesData', 'upgradesData', 'wavesData', 'balanceData'];
+    datasets.forEach((key) => {
+      if (!this.cache.json.exists(key)) {
+        console.error(`Failed to load JSON: ${key}`);
+      }
+    });
 
     // Create simple procedural textures to avoid missing assets
     const g = this.add.graphics();
