@@ -8,7 +8,7 @@ export default class WeaponMagicMissile extends WeaponBase {
     this.lastFire = time;
     const count = (this.config.projectileCount || 1);
     for (let i = 0; i < count; i++) {
-      const p = new Projectile(this.scene, this.owner.x, this.owner.y);
+      const p = new Projectile(this.scene, this.owner.x, this.owner.y, 'projectile_blue');
       p.damage = this.config.damage;
       p.speed = this.config.speed;
       p.pierce = this.config.pierce || 0;

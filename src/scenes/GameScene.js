@@ -31,8 +31,8 @@ export default class GameScene extends Phaser.Scene {
     this.cameraManager.follow(this.player);
 
     this.enemies = this.physics.add.group({ runChildUpdate: true });
-    this.projectiles = this.physics.add.group({ runChildUpdate: true });
-    this.enemyProjectiles = this.physics.add.group({ runChildUpdate: true });
+    this.projectiles = this.physics.add.group({ runChildUpdate: true, maxSize: 200 });
+    this.enemyProjectiles = this.physics.add.group({ runChildUpdate: true, maxSize: 200 });
     this.xpGroup = this.physics.add.group({ runChildUpdate: true });
     this.lootGroup = this.physics.add.group({ runChildUpdate: true });
     this.bossGroup = this.physics.add.group({ runChildUpdate: true });
@@ -60,7 +60,8 @@ export default class GameScene extends Phaser.Scene {
     this.waveManager.update(delta);
     this.spawnTimer += delta;
     const wave = this.waveManager.getCurrentWave();
-    if (wave && this.spawnTimer > (wave.spawnRate || 800)) {
+    const enemyCap = 380;
+    if (wave && this.spawnTimer > (wave.spawnRate || 800) && this.enemies.countActive(true) < enemyCap) {
       this.spawnTimer = 0;
       const enemiesPool = this.waveManager.getCurrentEnemies();
       for (let i = 0; i < (wave.spawnCount || 1); i++) {

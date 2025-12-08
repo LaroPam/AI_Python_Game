@@ -8,7 +8,7 @@ export default class WeaponCrossbow extends WeaponBase {
     if (!target) return;
     const shots = (this.config.projectileCount || 0) + 1;
     for (let i = 0; i < shots; i++) {
-      const p = new Projectile(this.scene, this.owner.x, this.owner.y);
+      const p = new Projectile(this.scene, this.owner.x, this.owner.y, 'projectile_orange');
       p.damage = this.config.damage;
       p.speed = this.config.speed || 520;
       p.pierce = this.config.pierce || 0;

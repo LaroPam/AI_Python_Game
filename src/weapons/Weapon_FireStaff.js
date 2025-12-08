@@ -6,7 +6,7 @@ export default class WeaponFireStaff extends WeaponBase {
     this.lastFire = time;
     const bursts = (this.config.projectileCount || 0) + 1;
     for (let i = 0; i < bursts; i++) {
-      const p = new Projectile(this.scene, this.owner.x, this.owner.y);
+      const p = new Projectile(this.scene, this.owner.x, this.owner.y, 'projectile_orange');
       p.damage = this.config.damage;
       p.speed = this.config.speed || 360;
       p.pierce = this.config.pierce || 0;

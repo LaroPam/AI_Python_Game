@@ -31,7 +31,15 @@ export default class BootScene extends Phaser.Scene {
     const g = this.add.graphics();
     g.fillStyle(0x4ade80); g.fillCircle(16, 16, 14); g.generateTexture('player', 32, 32); g.clear();
     g.fillStyle(0xef4444); g.fillRect(0, 0, 24, 24); g.generateTexture('enemy', 24, 24); g.clear();
-    g.fillStyle(0x0ea5e9); g.fillRect(0, 0, 12, 12); g.generateTexture('projectile', 12, 12); g.clear();
+    g.fillStyle(0xffffff); g.fillRect(4, 0, 16, 16); g.fillRect(0, 16, 24, 8); g.generateTexture('enemy_skeleton', 24, 24); g.clear();
+    g.fillStyle(0x22c55e); g.fillRect(2, 2, 20, 20); g.generateTexture('enemy_runner', 24, 24); g.clear();
+    g.fillStyle(0x7c3aed); g.fillRect(2, 2, 20, 20); g.generateTexture('enemy_shooter', 24, 24); g.clear();
+    g.fillStyle(0x9ca3af); g.fillRect(0, 0, 26, 26); g.generateTexture('enemy_tank', 26, 26); g.clear();
+    g.fillStyle(0xfbbf24); g.fillRect(0, 0, 18, 18); g.generateTexture('enemy_exploder', 18, 18); g.clear();
+    g.fillStyle(0x60a5fa); g.fillRect(0, 0, 12, 12); g.generateTexture('projectile_blue', 12, 12); g.clear();
+    g.fillStyle(0xf97316); g.fillRect(0, 0, 14, 14); g.generateTexture('projectile_orange', 14, 14); g.clear();
+    g.fillStyle(0x22d3ee); g.fillRect(0, 0, 10, 10); g.generateTexture('projectile_cyan', 10, 10); g.clear();
+    g.fillStyle(0xff0000); g.fillRect(0, 0, 12, 12); g.generateTexture('enemyProjectile', 12, 12); g.clear();
     g.lineStyle(2, 0xf97316); g.strokeCircle(16, 16, 16); g.generateTexture('aura', 32, 32); g.clear();
     g.fillStyle(0xfacc15); g.fillCircle(8, 8, 8); g.generateTexture('xp', 16, 16); g.clear();
     g.fillStyle(0xa855f7); g.fillRect(0, 0, 20, 14); g.generateTexture('chest', 20, 14); g.clear();
