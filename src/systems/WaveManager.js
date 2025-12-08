@@ -1,0 +1,42 @@
+import { UI_EVENTS } from '../constants.js';
+
+export default class WaveManager {
+  constructor(scene, wavesData) {
+    this.scene = scene;
+    this.waves = wavesData.waves;
+    this.currentWaveIndex = 0;
+    this.elapsed = 0;
+    this.bossSpawned = false;
+  }
+
+  update(delta) {
+    this.elapsed += delta / 1000;
+    const nextWave = this.waves[this.currentWaveIndex + 1];
+    if (nextWave && this.elapsed >= nextWave.time) {
+      this.currentWaveIndex++;
+      this.bossSpawned = false;
+      this.scene.events.emit(UI_EVENTS.NEW_WAVE, this.waves[this.currentWaveIndex]);
+    }
+  }
+
+  getCurrentEnemies() {
+    return this.waves[this.currentWaveIndex].enemies;
+  }
+
+  getCurrentWave() {
+    return this.waves[this.currentWaveIndex];
+  }
+
+  getDifficultyScale() {
+    return 1 + this.currentWaveIndex * 0.2;
+  }
+
+  shouldSpawnBoss(elapsed) {
+    const wave = this.waves[this.currentWaveIndex];
+    return wave.boss === true && !this.bossSpawned && elapsed >= wave.time;
+  }
+
+  markBossSpawned() {
+    this.bossSpawned = true;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "types": [
+    { "id": "walker", "name": "Медленный", "hp": 20, "speed": 70, "damage": 5, "behavior": "chase", "dropXp": 3 },
+    { "id": "runner", "name": "Быстрый", "hp": 18, "speed": 150, "damage": 6, "behavior": "chase", "dropXp": 4 },
+    { "id": "shooter", "name": "Стрелок", "hp": 28, "speed": 70, "damage": 8, "behavior": "shoot", "dropXp": 5, "projectileSpeed": 220, "fireRate": 1800 },
+    { "id": "tank", "name": "Броня", "hp": 60, "speed": 60, "damage": 10, "behavior": "chase", "dropXp": 8 },
+    { "id": "exploder", "name": "Взрыв", "hp": 22, "speed": 110, "damage": 14, "behavior": "suicide", "dropXp": 6, "explosionRadius": 90 }
+  ],
+  "bosses": [
+    { "id": "charger", "name": "Громила", "hp": 700, "speed": 90, "damage": 22, "behavior": "dash", "dashInterval": 2600, "dashSpeed": 340, "dashDuration": 650 },
+    { "id": "artillery", "name": "Осадник", "hp": 950, "speed": 70, "damage": 16, "behavior": "barrage", "fireRate": 1100, "projectileSpeed": 260, "volley": 6 }
+  ]
+}
