@@ -24,6 +24,11 @@ export const gameConfig = {
       fps: 60
     }
   },
+  audio: {
+    // Disable audio to avoid placeholder decode/load errors when no assets are present
+    noAudio: true,
+    disableWebAudio: true
+  },
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
