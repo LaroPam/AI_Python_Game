@@ -1,10 +1,11 @@
 {
   "waves": [
-    { "time": 0, "enemies": ["walker", "runner"] },
-    { "time": 60, "enemies": ["walker", "runner", "shooter"] },
-    { "time": 120, "enemies": ["runner", "tank"] },
-    { "time": 180, "enemies": ["walker", "exploder", "shooter"] },
-    { "time": 300, "boss": true, "enemies": ["tank", "shooter"] },
-    { "time": 600, "boss": true, "enemies": ["exploder", "tank", "runner"] }
+    { "time": 0, "spawnRate": 900, "spawnCount": 1, "enemies": ["walker", "runner"] },
+    { "time": 60, "spawnRate": 750, "spawnCount": 2, "enemies": ["walker", "runner", "shooter"] },
+    { "time": 120, "spawnRate": 650, "spawnCount": 2, "enemies": ["runner", "tank"] },
+    { "time": 180, "spawnRate": 600, "spawnCount": 3, "enemies": ["walker", "exploder", "shooter"] },
+    { "time": 300, "boss": true, "bossId": "charger", "spawnRate": 500, "spawnCount": 3, "enemies": ["tank", "shooter", "runner"] },
+    { "time": 420, "spawnRate": 480, "spawnCount": 3, "enemies": ["exploder", "tank", "runner"] },
+    { "time": 600, "boss": true, "bossId": "artillery", "spawnRate": 420, "spawnCount": 4, "enemies": ["exploder", "tank", "runner", "shooter"] }
   ]
 }

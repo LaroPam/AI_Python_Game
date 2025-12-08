@@ -5,13 +5,19 @@ import WeaponFireAura from '../weapons/Weapon_FireAura.js';
 import WeaponLightning from '../weapons/Weapon_LightningStrike.js';
 import WeaponBoomerang from '../weapons/Weapon_Boomerang.js';
 import WeaponOrbit from '../weapons/Weapon_OrbitingBlades.js';
+import WeaponSword from '../weapons/Weapon_Sword.js';
+import WeaponCrossbow from '../weapons/Weapon_Crossbow.js';
+import WeaponFireStaff from '../weapons/Weapon_FireStaff.js';
 
 const WEAPON_CLASSES = {
   magicMissile: WeaponMagicMissile,
   fireAura: WeaponFireAura,
   lightning: WeaponLightning,
   boomerang: WeaponBoomerang,
-  orbit: WeaponOrbit
+  orbit: WeaponOrbit,
+  sword: WeaponSword,
+  crossbow: WeaponCrossbow,
+  fireStaff: WeaponFireStaff
 };
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -34,17 +40,36 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.inputManager = new InputManager(scene);
     this.weapons = [];
+    this.weaponLevels = {};
+    this.maxWeapons = 3;
     this.lastHit = 0;
     this.invuln = 800;
+    this.lastMoveDir = new Phaser.Math.Vector2(1, 0);
+
     this.addWeapon(STARTING_WEAPON, scene.cache.json.get('weaponsData')[STARTING_WEAPON]);
   }
 
   addWeapon(id, data) {
-    const Cls = WEAPON_CLASSES[id];
-    if (Cls) {
-      const weapon = new Cls(this.scene, this, data);
-      this.weapons.push(weapon);
+    if (!data) return false;
+    const existing = this.weapons.find((w) => w.id === id);
+    if (existing) {
+      const currentLevel = this.weaponLevels[id] || 1;
+      if (currentLevel >= 7) return false;
+      const nextUpgrade = data.upgrades[currentLevel - 1];
+      if (nextUpgrade) existing.applyUpgrade(nextUpgrade);
+      this.weaponLevels[id] = currentLevel + 1;
+      return true;
     }
+    if (this.weapons.length >= this.maxWeapons) return false;
+    const Cls = WEAPON_CLASSES[id];
+    if (!Cls) return false;
+    const config = { ...data };
+    delete config.upgrades;
+    const weapon = new Cls(this.scene, this, config);
+    weapon.id = id;
+    this.weaponLevels[id] = 1;
+    this.weapons.push(weapon);
+    return true;
   }
 
   heal(delta) {
@@ -64,6 +89,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta) {
     const dir = this.inputManager.getDirection();
+    if (dir.lengthSq() > 0) this.lastMoveDir.copy(dir);
     this.body.setVelocity(dir.x * this.stats.speed, dir.y * this.stats.speed);
     this.body.velocity.normalize().scale(this.stats.speed);
     this.heal(delta);

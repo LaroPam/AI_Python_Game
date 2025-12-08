@@ -6,6 +6,7 @@ export default class WaveManager {
     this.waves = wavesData.waves;
     this.currentWaveIndex = 0;
     this.elapsed = 0;
+    this.bossSpawned = false;
   }
 
   update(delta) {
@@ -13,6 +14,7 @@ export default class WaveManager {
     const nextWave = this.waves[this.currentWaveIndex + 1];
     if (nextWave && this.elapsed >= nextWave.time) {
       this.currentWaveIndex++;
+      this.bossSpawned = false;
       this.scene.events.emit(UI_EVENTS.NEW_WAVE, this.waves[this.currentWaveIndex]);
     }
   }
@@ -21,8 +23,20 @@ export default class WaveManager {
     return this.waves[this.currentWaveIndex].enemies;
   }
 
-  shouldSpawnBoss() {
+  getCurrentWave() {
+    return this.waves[this.currentWaveIndex];
+  }
+
+  getDifficultyScale() {
+    return 1 + this.currentWaveIndex * 0.2;
+  }
+
+  shouldSpawnBoss(elapsed) {
     const wave = this.waves[this.currentWaveIndex];
-    return wave.boss === true;
+    return wave.boss === true && !this.bossSpawned && elapsed >= wave.time;
+  }
+
+  markBossSpawned() {
+    this.bossSpawned = true;
   }
 }

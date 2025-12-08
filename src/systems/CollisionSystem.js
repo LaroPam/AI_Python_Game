@@ -4,12 +4,16 @@ export default class CollisionSystem {
   }
 
   setup() {
-    const { physics, player, enemies, projectiles, xpGroup, lootGroup, bossGroup } = this.scene;
+    const { physics, player, enemies, projectiles, xpGroup, lootGroup, bossGroup, enemyProjectiles } = this.scene;
     physics.add.overlap(projectiles, enemies, this.handleProjectileHit, undefined, this);
+    physics.add.overlap(projectiles, bossGroup, this.handleProjectileHit, undefined, this);
+    physics.add.collider(enemies, enemies);
+    physics.add.collider(player, enemies);
     physics.add.overlap(player, enemies, this.handlePlayerHit, undefined, this);
     physics.add.overlap(player, bossGroup, this.handlePlayerHit, undefined, this);
     physics.add.overlap(player, xpGroup, this.collectXP, undefined, this);
     physics.add.overlap(player, lootGroup, this.collectChest, undefined, this);
+    physics.add.overlap(player, enemyProjectiles, this.handleEnemyProjectileHit, undefined, this);
   }
 
   handleProjectileHit(projectile, enemy) {
@@ -20,6 +24,11 @@ export default class CollisionSystem {
 
   handlePlayerHit(player, enemy) {
     player.takeDamage(enemy.damage);
+  }
+
+  handleEnemyProjectileHit(player, projectile) {
+    player.takeDamage(projectile.damage);
+    projectile.destroy();
   }
 
   collectXP(player, orb) {

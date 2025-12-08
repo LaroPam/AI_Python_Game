@@ -15,7 +15,9 @@ export default class EnemySpawner {
     const dir = Phaser.Math.Between(0, 3);
     const x = dir % 2 === 0 ? -padding : this.scene.worldSize + padding;
     const y = dir < 2 ? Phaser.Math.Between(0, this.scene.worldSize) : -padding;
-    const enemy = this.factory.createEnemy({ x, y, typeData: data });
+    const difficulty = this.scene.waveManager.getDifficultyScale();
+    const scaledData = { ...data, hp: Math.floor(data.hp * difficulty), damage: Math.floor(data.damage * difficulty) };
+    const enemy = this.factory.createEnemy({ x, y, typeData: scaledData });
     this.scene.enemies.add(enemy);
     return enemy;
   }

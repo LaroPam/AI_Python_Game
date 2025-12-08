@@ -26,6 +26,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.enemies = this.physics.add.group({ runChildUpdate: true });
     this.projectiles = this.physics.add.group({ runChildUpdate: true });
+    this.enemyProjectiles = this.physics.add.group({ runChildUpdate: true });
     this.xpGroup = this.physics.add.group({ runChildUpdate: true });
     this.lootGroup = this.physics.add.group({ runChildUpdate: true });
     this.bossGroup = this.physics.add.group({ runChildUpdate: true });
@@ -34,7 +35,7 @@ export default class GameScene extends Phaser.Scene {
     this.levelSystem = new LevelSystem(this);
     this.lootSystem = new LootSystem(this);
     this.collisionSystem = new CollisionSystem(this);
-    this.upgradeSystem = new UpgradeSystem(this, this.cache.json.get('upgradesData'));
+    this.upgradeSystem = new UpgradeSystem(this, this.cache.json.get('upgradesData'), this.cache.json.get('weaponsData'));
     this.enemySpawner = new EnemySpawner(this, this.cache.json.get('enemiesData'));
     this.waveManager = new WaveManager(this, this.cache.json.get('wavesData'));
 
@@ -52,22 +53,27 @@ export default class GameScene extends Phaser.Scene {
     this.player.update(time, delta);
     this.waveManager.update(delta);
     this.spawnTimer += delta;
-    const enemiesPool = this.waveManager.getCurrentEnemies();
-    if (this.spawnTimer > 800) {
+    const wave = this.waveManager.getCurrentWave();
+    if (wave && this.spawnTimer > (wave.spawnRate || 800)) {
       this.spawnTimer = 0;
-      const typeId = Phaser.Utils.Array.GetRandom(enemiesPool);
-      const enemy = this.enemySpawner.spawn(typeId);
-      enemy.on('killed', (e) => this.onEnemyKilled(e));
+      const enemiesPool = this.waveManager.getCurrentEnemies();
+      for (let i = 0; i < (wave.spawnCount || 1); i++) {
+        const typeId = Phaser.Utils.Array.GetRandom(enemiesPool);
+        const enemy = this.enemySpawner.spawn(typeId);
+        enemy.on('killed', (e) => this.onEnemyKilled(e));
+      }
     }
-    if (this.waveManager.shouldSpawnBoss() && this.elapsed - this.bossSpawnedAt > 300) {
-      this.spawnBoss();
+    if (this.waveManager.shouldSpawnBoss(this.elapsed) && this.elapsed - this.bossSpawnedAt > 300) {
+      this.spawnBoss(wave?.bossId);
       this.bossSpawnedAt = this.elapsed;
     }
-    this.enemies.children.iterate((enemy) => {
-      if (!enemy || !enemy.body) return;
-      const dir = new Phaser.Math.Vector2(this.player.x - enemy.x, this.player.y - enemy.y).normalize();
-      enemy.body.setVelocity(dir.x * enemy.speed, dir.y * enemy.speed);
+
+    this.bossGroup.children.iterate((boss) => {
+      if (boss && boss.updateBoss) {
+        boss.updateBoss(time, delta, this.player, this.enemyProjectiles);
+      }
     });
+
     if (this.autoMagnet) this.pullXPOrbs();
   }
 
@@ -102,16 +108,20 @@ export default class GameScene extends Phaser.Scene {
   }
 
   onEnemyKilled(enemy) {
-    const xpAmount = Phaser.Math.Between(1, 5);
+    const xpAmount = enemy.typeData?.dropXp || Phaser.Math.Between(1, 5);
     this.lootSystem.dropXP(enemy.x, enemy.y, xpAmount);
     if (Math.random() < 0.03) this.lootSystem.dropChest(enemy.x, enemy.y);
   }
 
-  spawnBoss() {
-    const bossData = this.cache.json.get('enemiesData').boss;
+  spawnBoss(bossId) {
+    if (!bossId) return;
+    const bosses = this.cache.json.get('enemiesData').bosses || [];
+    const bossData = bosses.find((b) => b.id === bossId) || bosses[0];
+    if (!bossData) return;
     const boss = this.factory.createBoss(this.player.x + 400, this.player.y, bossData);
-    boss.on('killed', () => this.showBossDefeated());
+    boss.on('killed', () => this.handleBossDefeated());
     this.bossGroup.add(boss);
+    this.waveManager.markBossSpawned();
     this.events.emit(UI_EVENTS.BOSS_SPAWN, bossData);
   }
 
@@ -124,13 +134,17 @@ export default class GameScene extends Phaser.Scene {
   }
 
   handleLevelUp(level) {
-    this.scene.pause();
-    this.scene.launch('LevelUpScene', { level });
+    this.openUpgradeMenu(1, level);
   }
 
   showChestReward() {
+    this.openUpgradeMenu(1, null, true);
+  }
+
+  openUpgradeMenu(picks = 1, level = null, chestReward = false) {
+    if (!this.scene.isActive('GameScene')) return;
     this.scene.pause();
-    this.scene.launch('LevelUpScene', { chestReward: true });
+    this.scene.launch('LevelUpScene', { level, chestReward, picks });
   }
 
   endRun() {
@@ -138,7 +152,8 @@ export default class GameScene extends Phaser.Scene {
     this.scene.start('GameOverScene', { timeSurvived: this.elapsed });
   }
 
-  showBossDefeated() {
+  handleBossDefeated() {
     this.add.text(this.player.x, this.player.y - 50, 'Босс побежден!', { color: '#facc15' }).setScrollFactor(0);
+    this.openUpgradeMenu(3, null, false);
   }
 }

@@ -4,10 +4,21 @@ export default class WeaponBase {
     this.owner = owner;
     this.config = { ...config };
     this.lastFire = 0;
+    this.id = config?.id;
   }
 
   canFire(time) {
     return time - this.lastFire >= Math.max(100, (this.config.cooldown || 0) * (1 - (this.owner.stats.attackSpeedBonus || 0)));
+  }
+
+  applyUpgrade(upgrade = {}) {
+    Object.keys(upgrade).forEach((key) => {
+      if (typeof upgrade[key] === 'number') {
+        this.config[key] = (this.config[key] || 0) + upgrade[key];
+      } else {
+        this.config[key] = upgrade[key];
+      }
+    });
   }
 
   fire(time) {
