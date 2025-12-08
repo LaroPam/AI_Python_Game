@@ -1,0 +1,12 @@
+{
+  "waves": [
+    { "time": 0, "spawnRate": 720, "spawnCount": 2, "enemies": ["walker", "runner", "skeleton"] },
+    { "time": 60, "spawnRate": 620, "spawnCount": 3, "enemies": ["walker", "runner", "shooter", "skeleton"] },
+    { "time": 120, "spawnRate": 520, "spawnCount": 4, "enemies": ["runner", "tank", "skeleton", "brute"] },
+    { "time": 180, "spawnRate": 460, "spawnCount": 5, "enemies": ["walker", "exploder", "shooter", "skeleton", "brute"] },
+    { "time": 300, "boss": true, "bossId": "charger", "spawnRate": 420, "spawnCount": 5, "enemies": ["tank", "shooter", "runner", "skeleton", "brute"] },
+    { "time": 420, "spawnRate": 380, "spawnCount": 6, "enemies": ["exploder", "tank", "runner", "skeleton", "mage"] },
+    { "time": 540, "spawnRate": 340, "spawnCount": 6, "enemies": ["runner", "shooter", "mage", "brute", "skeleton"] },
+    { "time": 600, "boss": true, "bossId": "artillery", "spawnRate": 320, "spawnCount": 7, "enemies": ["exploder", "tank", "runner", "shooter", "skeleton", "mage"] }
+  ]
+}
