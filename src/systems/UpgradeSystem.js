@@ -1,3 +1,5 @@
+import { UI_EVENTS } from '../constants.js';
+
 export default class UpgradeSystem {
   constructor(scene, upgradesData, weaponsData) {
     this.scene = scene;
@@ -24,12 +26,29 @@ export default class UpgradeSystem {
       const weaponLevel = player.weaponLevels[id] || 0;
       const weaponConfig = this.weaponsData[id];
       const nextUpgrade = weaponConfig.upgrades[weaponLevel - 1] || null;
-      pool.push({ type: 'weapon', id, name: weaponConfig.name, level: weaponLevel, upgrade: nextUpgrade });
+      pool.push({ type: 'weapon', id, name: weaponConfig.name, level: weaponLevel, upgrade: nextUpgrade, rarity: weaponLevel === 0 ? 'rare' : 'uncommon' });
     });
 
     this.upgradesData.forEach((up) => pool.push({ ...up, type: up.type || 'stat' }));
-    const shuffled = Phaser.Utils.Array.Shuffle(pool);
-    return shuffled.slice(0, count);
+    return this.pickWeighted(pool, count);
+  }
+
+  pickWeighted(pool, count) {
+    const weights = { common: 6, uncommon: 4, rare: 3, epic: 2, legendary: 1 };
+    const working = pool.map((p) => ({ ...p, weight: weights[p.rarity] || weights.common }));
+    const results = [];
+    for (let i = 0; i < count && working.length > 0; i++) {
+      const total = working.reduce((sum, item) => sum + item.weight, 0);
+      let roll = Math.random() * total;
+      let pickedIndex = working.findIndex((item) => {
+        roll -= item.weight;
+        return roll <= 0;
+      });
+      if (pickedIndex === -1) pickedIndex = working.length - 1;
+      const [picked] = working.splice(Math.max(0, pickedIndex), 1);
+      results.push(picked);
+    }
+    return results;
   }
 
   applyUpgrade(upgrade) {
@@ -44,6 +63,16 @@ export default class UpgradeSystem {
     stats.magnetRadius += upgrade.magnetRadius || 0;
     stats.attackSpeedBonus += upgrade.attackSpeed || 0;
     stats.armor = (stats.armor || 0) + (upgrade.armor || 0);
+    if (upgrade.globalDamage) {
+      this.scene.player.weapons.forEach((w) => {
+        w.config.damage = Math.round((w.config.damage || 1) * (1 + upgrade.globalDamage));
+      });
+    }
+    if (upgrade.areaSize) {
+      this.scene.player.weapons.forEach((w) => {
+        w.config.radius = (w.config.radius || 40) * (1 + upgrade.areaSize);
+      });
+    }
     if (upgrade.auraDamage) {
       this.scene.damageEnemiesInRadius(this.scene.player.x, this.scene.player.y, 160, upgrade.auraDamage);
     }
@@ -56,6 +85,7 @@ export default class UpgradeSystem {
     if (upgrade.projectileCount) {
       this.scene.player.weapons.forEach((w) => { w.config.projectileCount = (w.config.projectileCount || 0) + upgrade.projectileCount; });
     }
+    this.scene.events.emit(UI_EVENTS.UPDATE_STATS);
   }
 
   applyWeaponUpgrade(upgrade) {

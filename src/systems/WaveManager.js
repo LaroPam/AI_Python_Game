@@ -29,7 +29,8 @@ export default class WaveManager {
   }
 
   getDifficultyScale() {
-    return 1 + this.currentWaveIndex * 0.2;
+    const timeScale = 1 + (this.elapsed / 90) * 0.35;
+    return (1 + this.currentWaveIndex * 0.55) * timeScale;
   }
 
   shouldSpawnBoss(elapsed) {

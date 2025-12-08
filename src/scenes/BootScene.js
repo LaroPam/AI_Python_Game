@@ -36,6 +36,8 @@ export default class BootScene extends Phaser.Scene {
     g.fillStyle(0x7c3aed); g.fillRect(2, 2, 20, 20); g.generateTexture('enemy_shooter', 24, 24); g.clear();
     g.fillStyle(0x9ca3af); g.fillRect(0, 0, 26, 26); g.generateTexture('enemy_tank', 26, 26); g.clear();
     g.fillStyle(0xfbbf24); g.fillRect(0, 0, 18, 18); g.generateTexture('enemy_exploder', 18, 18); g.clear();
+    g.fillStyle(0x7f1d1d); g.fillRect(0, 0, 28, 28); g.fillRect(8, 8, 12, 12); g.generateTexture('enemy_brute', 30, 30); g.clear();
+    g.fillStyle(0x2563eb); g.fillRect(0, 0, 22, 26); g.fillRect(4, 8, 14, 10); g.generateTexture('enemy_mage', 24, 28); g.clear();
     g.fillStyle(0x60a5fa); g.fillRect(0, 0, 12, 12); g.generateTexture('projectile_blue', 12, 12); g.clear();
     g.fillStyle(0xf97316); g.fillRect(0, 0, 14, 14); g.generateTexture('projectile_orange', 14, 14); g.clear();
     g.fillStyle(0x22d3ee); g.fillRect(0, 0, 10, 10); g.generateTexture('projectile_cyan', 10, 10); g.clear();

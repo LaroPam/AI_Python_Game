@@ -47,7 +47,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.lastMoveDir = new Phaser.Math.Vector2(1, 0);
     this.lastAimDir = new Phaser.Math.Vector2(1, 0);
 
-    this.addWeapon(STARTING_WEAPON, scene.cache.json.get('weaponsData')[STARTING_WEAPON]);
+    const starter = config.startWeapon || STARTING_WEAPON;
+    this.addWeapon(starter, scene.cache.json.get('weaponsData')[starter]);
   }
 
   addWeapon(id, data) {

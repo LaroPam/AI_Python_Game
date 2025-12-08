@@ -7,7 +7,7 @@ import LevelSystem from '../systems/LevelSystem.js';
 import LootSystem from '../systems/LootSystem.js';
 import CollisionSystem from '../systems/CollisionSystem.js';
 import UpgradeSystem from '../systems/UpgradeSystem.js';
-import { UI_EVENTS } from '../constants.js';
+import { STARTING_WEAPON, UI_EVENTS } from '../constants.js';
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -26,7 +26,8 @@ export default class GameScene extends Phaser.Scene {
     const upgradesData = this.cache.json.get('upgradesData') || { general: [] };
     const wavesData = this.cache.json.get('wavesData') || { waves: [{ time: 0, enemies: [], spawnRate: 1000, spawnCount: 1 }] };
 
-    this.player = this.factory.createPlayer(this.worldSize / 2, this.worldSize / 2, balance.player);
+    const startWeapon = this.registry.get('startWeapon') || STARTING_WEAPON;
+    this.player = this.factory.createPlayer(this.worldSize / 2, this.worldSize / 2, { ...balance.player, startWeapon });
     this.cameraManager = new CameraManager(this);
     this.cameraManager.follow(this.player);
 
@@ -60,7 +61,7 @@ export default class GameScene extends Phaser.Scene {
     this.waveManager.update(delta);
     this.spawnTimer += delta;
     const wave = this.waveManager.getCurrentWave();
-    const enemyCap = 380;
+    const enemyCap = 450;
     if (wave && this.spawnTimer > (wave.spawnRate || 800) && this.enemies.countActive(true) < enemyCap) {
       this.spawnTimer = 0;
       const enemiesPool = this.waveManager.getCurrentEnemies();

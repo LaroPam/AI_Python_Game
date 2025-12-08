@@ -17,7 +17,7 @@ export default class CollisionSystem {
   }
 
   handleProjectileHit(projectile, enemy) {
-    enemy.takeDamage(projectile.damage);
+    enemy.takeDamage(projectile.damage, projectile);
     projectile.pierce--;
     if (projectile.pierce < 0) projectile.destroy();
   }

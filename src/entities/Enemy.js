@@ -1,4 +1,5 @@
 import EnemyProjectile from './EnemyProjectile.js';
+import { UI_EVENTS } from '../constants.js';
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, data) {
@@ -16,8 +17,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setCircle(10, 2, 2);
   }
 
-  takeDamage(amount) {
+  takeDamage(amount, source = null) {
     this.hp -= amount;
+    if (source && source.body) {
+      const knockDir = new Phaser.Math.Vector2(this.x - source.x, this.y - source.y).normalize();
+      this.body.setVelocity(knockDir.x * 160, knockDir.y * 160);
+    }
+    this.scene.events.emit(UI_EVENTS.DAMAGE_NUMBER, { x: this.x, y: this.y, amount });
     if (this.hp <= 0) {
       this.emit('killed', this);
       this.destroy();
