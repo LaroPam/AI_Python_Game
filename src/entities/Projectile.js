@@ -1,0 +1,43 @@
+export default class Projectile extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y, texture = 'projectile') {
+    super(scene, x, y, texture);
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+    this.speed = 400;
+    this.damage = 5;
+    this.pierce = 0;
+    this.lifespan = 2500;
+    this.spawnTime = scene.time.now;
+    this.body.setAllowGravity(false);
+    this.body.setImmovable(false);
+    this.body.setDrag(0);
+    this.body.setSize(this.width * 0.9, this.height * 0.9);
+  }
+
+  fire(direction) {
+    const dir = direction.clone().normalize();
+    if (dir.lengthSq() === 0) dir.set(1, 0);
+    this.setActive(true).setVisible(true);
+    this.body.setVelocity(dir.x * this.speed, dir.y * this.speed);
+    this.setRotation(dir.angle());
+    this.scene.tweens.add({
+      targets: this,
+      scale: { from: 0.75, to: 1 },
+      alpha: { from: 0.85, to: 1 },
+      duration: 120,
+      ease: 'sine.out'
+    });
+  }
+
+  preUpdate(time, delta) {
+    super.preUpdate(time, delta);
+    const { worldView } = this.scene.cameras.main;
+    if (!worldView.contains(this.x, this.y)) {
+      this.destroy();
+      return;
+    }
+    if (time - this.spawnTime > this.lifespan) {
+      this.destroy();
+    }
+  }
+}
