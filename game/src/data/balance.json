@@ -1,6 +1,0 @@
-{
-  "player": { "hp": 100, "speed": 200, "recovery": 0.5, "magnet": 120 },
-  "loot": { "xp": { "min": 1, "max": 5 }, "chestChance": 0.05 },
-  "bossInterval": 300,
-  "enemySpawnRate": 1200
-}
