@@ -17,6 +17,8 @@ export default class EnemyProjectile extends Phaser.Physics.Arcade.Sprite {
     if (dir.lengthSq() === 0) dir.set(1, 0);
     this.setActive(true).setVisible(true);
     this.body.setVelocity(dir.x * this.speed, dir.y * this.speed);
+    this.setRotation(dir.angle());
+    this.scene.tweens.add({ targets: this, scale: { from: 0.6, to: 1 }, duration: 120, ease: 'sine.out' });
   }
 
   preUpdate(time, delta) {

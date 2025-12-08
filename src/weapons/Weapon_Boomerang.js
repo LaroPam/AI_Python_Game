@@ -10,7 +10,10 @@ export default class WeaponBoomerang extends WeaponBase {
       p.damage = this.config.damage;
       p.speed = this.config.speed;
       p.pierce = this.config.pierce || 0;
-      const angle = this.owner.body.velocity.angle() + Phaser.Math.DegToRad((i - (count - 1) / 2) * 15);
+      const baseAngle = (this.owner.body.velocity.lengthSq() > 0
+        ? this.owner.body.velocity.angle()
+        : this.owner.lastAimDir.angle());
+      const angle = baseAngle + Phaser.Math.DegToRad((i - (count - 1) / 2) * 15);
       const dir = new Phaser.Math.Vector2(Math.cos(angle), Math.sin(angle));
       p.fire(dir.length() === 0 ? new Phaser.Math.Vector2(1, 0) : dir);
       this.scene.projectiles.add(p);

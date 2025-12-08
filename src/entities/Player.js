@@ -45,6 +45,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.lastHit = 0;
     this.invuln = 800;
     this.lastMoveDir = new Phaser.Math.Vector2(1, 0);
+    this.lastAimDir = new Phaser.Math.Vector2(1, 0);
 
     this.addWeapon(STARTING_WEAPON, scene.cache.json.get('weaponsData')[STARTING_WEAPON]);
   }
@@ -90,8 +91,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   update(time, delta) {
     const dir = this.inputManager.getDirection();
     if (dir.lengthSq() > 0) this.lastMoveDir.copy(dir);
-    this.body.setVelocity(dir.x * this.stats.speed, dir.y * this.stats.speed);
-    this.body.velocity.normalize().scale(this.stats.speed);
+
+    const aimDir = this.inputManager.getAimDirection(this.x, this.y, this.lastMoveDir);
+    if (aimDir.lengthSq() > 0) this.lastAimDir.copy(aimDir);
+
+    const desiredVel = dir.clone().scale(this.stats.speed);
+    const currentVel = this.body.velocity.clone();
+    currentVel.lerp(desiredVel, 0.22);
+    if (currentVel.lengthSq() > this.stats.speed * this.stats.speed) {
+      currentVel.normalize().scale(this.stats.speed);
+    }
+    this.body.setVelocity(currentVel.x, currentVel.y);
+
+    // Give the player a subtle squash-stretch based on speed for visual feedback
+    const speedRatio = Phaser.Math.Clamp(currentVel.length() / Math.max(1, this.stats.speed), 0, 1);
+    this.setScale(1 + speedRatio * 0.05, 1 - speedRatio * 0.05);
     this.heal(delta);
     this.weapons.forEach((w) => w.update(time, delta));
   }

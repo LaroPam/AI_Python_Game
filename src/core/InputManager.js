@@ -5,6 +5,7 @@ export default class InputManager {
     this.wasd = scene.input.keyboard.addKeys('W,A,S,D');
     // Reuse a single vector instance to avoid allocations every frame
     this.direction = new Phaser.Math.Vector2();
+    this.aimDirection = new Phaser.Math.Vector2(1, 0);
   }
 
   getDirection() {
@@ -19,5 +20,24 @@ export default class InputManager {
     this.direction.set(x, y);
     if (this.direction.lengthSq() > 0) this.direction.normalize();
     return this.direction;
+  }
+
+  getAimDirection(x, y, fallbackDir = new Phaser.Math.Vector2(1, 0)) {
+    const pointer = this.scene.input.activePointer;
+    this.aimDirection.set(0, 0);
+
+    if (pointer) {
+      const worldX = pointer.worldX ?? pointer.x;
+      const worldY = pointer.worldY ?? pointer.y;
+      this.aimDirection.set(worldX - x, worldY - y);
+    }
+
+    if (this.aimDirection.lengthSq() === 0 && fallbackDir) {
+      this.aimDirection.copy(fallbackDir);
+    }
+
+    if (this.aimDirection.lengthSq() === 0) this.aimDirection.set(1, 0);
+    this.aimDirection.normalize();
+    return this.aimDirection;
   }
 }
