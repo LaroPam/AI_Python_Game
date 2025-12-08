@@ -3,7 +3,8 @@ import { UI_EVENTS } from '../constants.js';
 export default class WaveManager {
   constructor(scene, wavesData) {
     this.scene = scene;
-    this.waves = wavesData.waves;
+    const safeWaves = Array.isArray(wavesData?.waves) ? wavesData.waves : [{ time: 0, enemies: [], spawnRate: 1000, spawnCount: 1 }];
+    this.waves = safeWaves;
     this.currentWaveIndex = 0;
     this.elapsed = 0;
     this.bossSpawned = false;

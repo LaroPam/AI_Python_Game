@@ -19,7 +19,13 @@ export default class GameScene extends Phaser.Scene {
     this.add.tileSprite(0, 0, this.worldSize, this.worldSize, 'tile').setOrigin(0);
     this.physics.world.setBounds(0, 0, this.worldSize, this.worldSize);
     this.factory = new EntityFactory(this);
-    const balance = this.cache.json.get('balanceData');
+    // Guard against missing or failed JSON loads so the scene can continue with defaults rather than throwing
+    const balance = this.cache.json.get('balanceData') || { player: { hp: 100, speed: 180, recovery: 0.5, magnet: 120 } };
+    const weaponsData = this.cache.json.get('weaponsData') || {};
+    const enemiesData = this.cache.json.get('enemiesData') || { types: [], bosses: [] };
+    const upgradesData = this.cache.json.get('upgradesData') || { general: [] };
+    const wavesData = this.cache.json.get('wavesData') || { waves: [{ time: 0, enemies: [], spawnRate: 1000, spawnCount: 1 }] };
+
     this.player = this.factory.createPlayer(this.worldSize / 2, this.worldSize / 2, balance.player);
     this.cameraManager = new CameraManager(this);
     this.cameraManager.follow(this.player);
@@ -35,9 +41,9 @@ export default class GameScene extends Phaser.Scene {
     this.levelSystem = new LevelSystem(this);
     this.lootSystem = new LootSystem(this);
     this.collisionSystem = new CollisionSystem(this);
-    this.upgradeSystem = new UpgradeSystem(this, this.cache.json.get('upgradesData'), this.cache.json.get('weaponsData'));
-    this.enemySpawner = new EnemySpawner(this, this.cache.json.get('enemiesData'));
-    this.waveManager = new WaveManager(this, this.cache.json.get('wavesData'));
+    this.upgradeSystem = new UpgradeSystem(this, upgradesData, weaponsData);
+    this.enemySpawner = new EnemySpawner(this, enemiesData);
+    this.waveManager = new WaveManager(this, wavesData);
 
     this.collisionSystem.setup();
     this.elapsed = 0;
@@ -115,7 +121,8 @@ export default class GameScene extends Phaser.Scene {
 
   spawnBoss(bossId) {
     if (!bossId) return;
-    const bosses = this.cache.json.get('enemiesData').bosses || [];
+    const enemiesData = this.cache.json.get('enemiesData') || { bosses: [] };
+    const bosses = Array.isArray(enemiesData.bosses) ? enemiesData.bosses : [];
     const bossData = bosses.find((b) => b.id === bossId) || bosses[0];
     if (!bossData) return;
     const boss = this.factory.createBoss(this.player.x + 400, this.player.y, bossData);

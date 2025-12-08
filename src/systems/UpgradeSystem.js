@@ -1,8 +1,8 @@
 export default class UpgradeSystem {
   constructor(scene, upgradesData, weaponsData) {
     this.scene = scene;
-    this.upgradesData = upgradesData.general;
-    this.weaponsData = weaponsData;
+    this.upgradesData = Array.isArray(upgradesData?.general) ? upgradesData.general : [];
+    this.weaponsData = weaponsData || {};
   }
 
   getRandomUpgrades(count = 3) {
