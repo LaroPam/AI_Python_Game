@@ -1,0 +1,24 @@
+{
+  "general": [
+    { "id": "speed", "name": "+Скорость", "moveSpeed": 20 },
+    { "id": "projSpeed", "name": "+Скорость пули", "projectileSpeed": 50 },
+    { "id": "projCount", "name": "+Снаряды", "projectileCount": 1 },
+    { "id": "area", "name": "+Площадь", "areaSize": 0.1 },
+    { "id": "attackSpeed", "name": "+Атака", "attackSpeed": 0.1 },
+    { "id": "maxHp", "name": "+Здоровье", "maxHealth": 10 },
+    { "id": "recovery", "name": "+Реген", "recovery": 0.2 },
+    { "id": "magnet", "name": "+Магнит", "magnetRadius": 20 },
+    { "id": "goldenAura", "name": "Золотая аура", "type": "rare", "auraDamage": 4 },
+    { "id": "autoMagnet", "name": "Авто магнит", "type": "rare", "autoMagnet": true },
+    { "id": "hyper", "name": "Супер скорость", "type": "rare", "moveSpeed": 50 },
+    { "id": "cooldown", "name": "Перезарядка", "type": "rare", "attackSpeed": 0.2 },
+    { "id": "armor", "name": "+Броня", "armor": 2 },
+    { "id": "hp2", "name": "Толстокожий", "maxHealth": 20 },
+    { "id": "regen2", "name": "Регениратор", "recovery": 0.5 },
+    { "id": "area2", "name": "Широкие удары", "areaSize": 0.15 },
+    { "id": "count2", "name": "Запасы", "projectileCount": 1 },
+    { "id": "projSpeed2", "name": "Точность", "projectileSpeed": 70 },
+    { "id": "magnet2", "name": "Мощный магнит", "magnetRadius": 40 },
+    { "id": "attack2", "name": "Быстрые руки", "attackSpeed": 0.15 }
+  ]
+}
