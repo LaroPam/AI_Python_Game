@@ -1,4 +1,4 @@
-# Phaser Survivors
+# Phaser Survivors (https://laropam.github.io/AI_Python_Game/)
 
 Полноценный шаблон игры в духе Vampire Survivors на Phaser 3 (ES-модули) для запуска в браузере и публикации в Яндекс Игры.
 
