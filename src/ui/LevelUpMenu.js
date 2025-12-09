@@ -16,11 +16,12 @@ export default class LevelUpMenu extends Phaser.GameObjects.Container {
 
   showUpgrades(upgrades, onSelect) {
     this.remove(this.choiceTexts, true);
-    this.choiceTexts = upgrades.map((up, idx) => {
+    const safeUpgrades = Array.isArray(upgrades) ? upgrades.filter(Boolean) : [];
+    this.choiceTexts = safeUpgrades.map((up, idx) => {
       const rarityColors = { common: '#d1d5db', uncommon: '#22c55e', rare: '#3b82f6', epic: '#facc15', legendary: '#a855f7', ...RARITY_COLORS };
       const desc = up.type === 'weapon'
-        ? `${up.name} (ур. ${Math.max(1, (up.level || 0) + 1)})\n${up.upgrade ? Object.keys(up.upgrade).join(', ') : 'Усиление'}`
-        : `${up.name}\n${up.description || ''}`;
+        ? `${up.name || 'Оружие'} (ур. ${Math.max(1, (up.level || 0) + 1)})\n${up.upgrade ? Object.keys(up.upgrade).join(', ') : 'Усиление'}`
+        : `${up.name || 'Улучшение'}\n${up.description || ''}`;
       const txt = this.scene.add.text(-220 + idx * 220, -90, desc, {
         fontSize: '16px',
         fontFamily: FONT_FAMILY,
@@ -28,7 +29,8 @@ export default class LevelUpMenu extends Phaser.GameObjects.Container {
         wordWrap: { width: 180 },
         lineSpacing: 6
       }).setOrigin(0);
-      const badge = this.scene.add.text(txt.x, txt.y - 24, up.rarity ? up.rarity.toUpperCase() : 'Оружие', {
+      const badgeLabel = typeof up.rarity === 'string' && up.rarity.trim() ? up.rarity.toUpperCase() : (up.type === 'weapon' ? 'ОРУЖИЕ' : 'БУСТ');
+      const badge = this.scene.add.text(txt.x, txt.y - 24, badgeLabel, {
         fontSize: '12px',
         fontFamily: FONT_FAMILY,
         color: rarityColors[up.rarity] || '#f8fafc'
