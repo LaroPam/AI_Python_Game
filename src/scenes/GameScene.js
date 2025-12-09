@@ -24,12 +24,28 @@ export default class GameScene extends Phaser.Scene {
     // Guard against missing or failed JSON loads so the scene can continue with defaults rather than throwing
     const balance = this.cache.json.get('balanceData') || { player: { hp: 100, speed: 180, recovery: 0.5, magnet: 120 } };
     const weaponsData = this.cache.json.get('weaponsData') || {};
+    const fallbackWeapons = {
+      magicMissile: {
+        name: 'Магическая стрела',
+        damage: 12,
+        cooldown: 800,
+        speed: 480,
+        projectileCount: 1,
+        pierce: 0,
+        upgrades: []
+      }
+    };
+    this.weaponsData = Object.keys(weaponsData).length ? weaponsData : fallbackWeapons;
     const enemiesData = this.cache.json.get('enemiesData') || { types: [], bosses: [] };
     const upgradesData = this.cache.json.get('upgradesData') || { general: [] };
     const wavesData = this.cache.json.get('wavesData') || { waves: [{ time: 0, enemies: [], spawnRate: 1000, spawnCount: 1 }] };
 
     const startWeapon = this.registry.get('startWeapon') || STARTING_WEAPON;
-    this.player = this.factory.createPlayer(this.worldSize / 2, this.worldSize / 2, { ...balance.player, startWeapon });
+    this.player = this.factory.createPlayer(this.worldSize / 2, this.worldSize / 2, {
+      ...balance.player,
+      startWeapon,
+      weaponsData: this.weaponsData
+    });
     this.cameraManager = new CameraManager(this);
     this.cameraManager.follow(this.player);
 
@@ -44,7 +60,7 @@ export default class GameScene extends Phaser.Scene {
     this.levelSystem = new LevelSystem(this);
     this.lootSystem = new LootSystem(this);
     this.collisionSystem = new CollisionSystem(this);
-    this.upgradeSystem = new UpgradeSystem(this, upgradesData, weaponsData);
+    this.upgradeSystem = new UpgradeSystem(this, upgradesData, this.weaponsData);
     this.enemySpawner = new EnemySpawner(this, enemiesData);
     this.waveManager = new WaveManager(this, wavesData);
 

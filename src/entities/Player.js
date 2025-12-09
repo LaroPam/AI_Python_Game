@@ -51,17 +51,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.lastMoveDir = new Phaser.Math.Vector2(1, 0);
     this.lastAimDir = new Phaser.Math.Vector2(1, 0);
 
+    this.weaponsData = config.weaponsData || scene.cache.json.get('weaponsData') || {};
     const starter = config.startWeapon || STARTING_WEAPON;
-    this.addWeapon(starter, scene.cache.json.get('weaponsData')[starter]);
+    this.addWeapon(starter, this.weaponsData[starter]);
   }
 
   addWeapon(id, data) {
-    if (!data) return false;
+    const weaponData = data || this.weaponsData[id];
+    if (!weaponData) return false;
     const existing = this.weapons.find((w) => w.id === id);
     if (existing) {
       const currentLevel = this.weaponLevels[id] || 1;
       if (currentLevel >= 7) return false;
-      const nextUpgrade = data.upgrades[currentLevel - 1];
+      const nextUpgrade = weaponData.upgrades?.[currentLevel - 1];
       if (nextUpgrade) existing.applyUpgrade(nextUpgrade);
       this.weaponLevels[id] = currentLevel + 1;
       return true;
@@ -69,7 +71,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.weapons.length >= this.maxWeapons) return false;
     const Cls = WEAPON_CLASSES[id];
     if (!Cls) return false;
-    const config = { ...data };
+    const config = { ...weaponData };
     delete config.upgrades;
     const weapon = new Cls(this.scene, this, config);
     weapon.id = id;
