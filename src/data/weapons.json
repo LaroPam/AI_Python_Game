@@ -1,0 +1,143 @@
+{
+  "magicMissile": {
+    "id": "magicMissile",
+    "name": "Magic Missile",
+    "cooldown": 800,
+    "damage": 10,
+    "speed": 450,
+    "pierce": 0,
+    "projectileCount": 1,
+    "upgrades": [
+      { "name": "+Урон", "damage": 5 },
+      { "name": "Больше снарядов", "projectileCount": 1 },
+      { "name": "Скорострельность", "cooldown": -100 },
+      { "name": "Пробивание", "pierce": 1 },
+      { "name": "Супер залп", "projectileCount": 2, "cooldown": -150 },
+      { "name": "Острые копья", "damage": 8 },
+      { "name": "Катализатор", "cooldown": -120 }
+    ]
+  },
+  "fireAura": {
+    "id": "fireAura",
+    "name": "Fire Aura",
+    "cooldown": 0,
+    "damage": 5,
+    "radius": 120,
+    "tickRate": 600,
+    "upgrades": [
+      { "name": "+Радиус", "radius": 20 },
+      { "name": "+Урон", "damage": 3 },
+      { "name": "Быстрее тики", "tickRate": -100 },
+      { "name": "Двойной пояс", "radius": 40 },
+      { "name": "Огненная буря", "damage": 6 },
+      { "name": "Огненный вал", "radius": 25 },
+      { "name": "Горение", "damage": 7 }
+    ]
+  },
+  "lightning": {
+    "id": "lightning",
+    "name": "Lightning Strike",
+    "cooldown": 1500,
+    "damage": 20,
+    "radius": 100,
+    "projectileCount": 0,
+    "upgrades": [
+      { "name": "Широкая молния", "radius": 30 },
+      { "name": "Мощность", "damage": 10 },
+      { "name": "Быстрая гроза", "cooldown": -200 },
+      { "name": "Двойной удар", "projectileCount": 1 },
+      { "name": "Цепная", "projectileCount": 1 },
+      { "name": "Статика", "damage": 12 },
+      { "name": "Разряд", "cooldown": -120 }
+    ]
+  },
+  "boomerang": {
+    "id": "boomerang",
+    "name": "Boomerang",
+    "cooldown": 1200,
+    "damage": 8,
+    "speed": 400,
+    "pierce": 0,
+    "projectileCount": 0,
+    "radius": 40,
+    "upgrades": [
+      { "name": "Возврат быстрее", "speed": 60 },
+      { "name": "+Урон", "damage": 4 },
+      { "name": "Двойной бумеранг", "projectileCount": 1 },
+      { "name": "Большой клинок", "radius": 10 },
+      { "name": "Бесконечный", "pierce": 3 },
+      { "name": "Ураган", "projectileCount": 1 },
+      { "name": "Рикошет", "pierce": 2 }
+    ]
+  },
+  "orbit": {
+    "id": "orbit",
+    "name": "Orbiting Blades",
+    "cooldown": 0,
+    "damage": 6,
+    "radius": 140,
+    "projectileCount": 3,
+    "upgrades": [
+      { "name": "Больше лезвий", "projectileCount": 2 },
+      { "name": "+Радиус", "radius": 20 },
+      { "name": "+Урон", "damage": 4 },
+      { "name": "Гироскоп", "cooldown": -100 },
+      { "name": "Пила", "damage": 8 },
+      { "name": "Круг боли", "radius": 30 },
+      { "name": "Буря клинков", "projectileCount": 2 }
+    ]
+  },
+  "sword": {
+    "id": "sword",
+    "name": "Рунный меч",
+    "cooldown": 900,
+    "damage": 16,
+    "radius": 90,
+    "projectileCount": 0,
+    "upgrades": [
+      { "name": "Дальняя дуга", "radius": 12 },
+      { "name": "Удар сильнее", "damage": 6 },
+      { "name": "Двойной взмах", "projectileCount": 1 },
+      { "name": "Легкость клинка", "cooldown": -120 },
+      { "name": "Рассечение", "damage": 8 },
+      { "name": "Широкий захват", "radius": 16 },
+      { "name": "Мастер меча", "cooldown": -150 }
+    ]
+  },
+  "crossbow": {
+    "id": "crossbow",
+    "name": "Арбалет",
+    "cooldown": 750,
+    "damage": 14,
+    "speed": 520,
+    "pierce": 1,
+    "projectileCount": 0,
+    "upgrades": [
+      { "name": "Жало", "damage": 5 },
+      { "name": "Быстрая тетива", "cooldown": -80 },
+      { "name": "Двойной болт", "projectileCount": 1 },
+      { "name": "Пробить", "pierce": 1 },
+      { "name": "Тройной болт", "projectileCount": 1 },
+      { "name": "Стальная арматура", "damage": 7 },
+      { "name": "Крепкая тетива", "cooldown": -120 }
+    ]
+  },
+  "fireStaff": {
+    "id": "fireStaff",
+    "name": "Огненный посох",
+    "cooldown": 1300,
+    "damage": 22,
+    "speed": 360,
+    "pierce": 0,
+    "projectileCount": 2,
+    "upgrades": [
+      { "name": "Жар", "damage": 6 },
+      { "name": "Больше залпов", "projectileCount": 1 },
+      { "name": "Топливо", "cooldown": -120 },
+      { "name": "Расплав", "damage": 8 },
+      { "name": "Факел", "projectileCount": 1 },
+      { "name": "Феникс", "projectileCount": 1 },
+      { "name": "Огненный дождь", "cooldown": -160 }
+    ]
+  }
+}
