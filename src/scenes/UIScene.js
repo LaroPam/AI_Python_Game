@@ -55,12 +55,19 @@ export default class UIScene extends Phaser.Scene {
   }
 
   update() {
+    if (!this.gameScene || !this.gameScene.player || !this.gameScene.player.stats) {
+      return;
+    }
+
     const player = this.gameScene.player;
+    const xpSystem = this.gameScene.xpSystem;
+
+    if (!xpSystem) return;
     this.healthBar.updateValue(player.stats.health, player.stats.maxHealth);
     this.xpBar.updateValue(
-      this.gameScene.xpSystem.currentXp,
-      this.gameScene.xpSystem.nextLevelXp,
-      this.gameScene.xpSystem.level
+      xpSystem.currentXp,
+      xpSystem.nextLevelXp,
+      xpSystem.level
     );
     const t = Math.floor(this.gameScene.elapsed);
     this.timerText.setText(`${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`);
@@ -76,7 +83,7 @@ export default class UIScene extends Phaser.Scene {
       `Скорость атаки: ${(stats.attackSpeedBonus * 100).toFixed(0)}%`
     );
 
-    const weaponLines = player.weapons.map((w) => `${w.config.name || w.id} — ур. ${player.weaponLevels[w.id]}`);
+    const weaponLines = (player.weapons || []).map((w) => `${w.config?.name || w.id} — ур. ${player.weaponLevels[w.id] || 1}`);
     this.weaponText.setText(`Оружие:\n${weaponLines.join('\n')}`);
   }
 }
